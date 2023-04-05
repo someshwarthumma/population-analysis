@@ -54,5 +54,15 @@ $sizes: (
 .sp-height{
   height: 320px;
 }
+
+svg { border: 1px solid #dedede; }
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area { fill: #4ca3bd; }
   
   
