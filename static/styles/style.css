@@ -1,0 +1,13 @@
+.select-wrapper {
+    height: 20px;
+    overflow-y: visible;
+  }
+  
+  .select {
+    width: 100%;
+    /* make it min-height*/
+    min-height: 50px;
+    border-radius: 25px;
+    border-color: #555;
+    padding: 2px;
+  }
