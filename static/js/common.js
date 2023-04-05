@@ -31,9 +31,7 @@ function prepare_data(data) {
 function render_page() {
     _.map(global_data.filters.years, d=>{
         $('#year_select').append($("<option></option>").attr("value",d).text(d))
-    })
-    // debugger
-    
+    })    
 }
 
 $(document).ready(function () {
