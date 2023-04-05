@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>My Page</title>
-  </head>
-  <body>
-    <nav>
-      <select id="dropdown">
-        <option value="home">Home</option>
-        <option value="about">About</option>
-        <option value="contact">Contact</option>
-      </select>
-    </nav>
-    
-    <h1>Welcome to my page!</h1>
-    <p>Here's some content for my page.</p>
-    
-    <script>
-    //   const dropdown = document.getElementById("dropdown");
-    //   dropdown.addEventListener("change", () => {
-    //     const selectedOption = dropdown.options[dropdown.selectedIndex].value;
-    //     window.location.href = `${selectedOption}.html`;
-    //   });
-    </script>
-  </body>
-</html>
+{% block head %}
+      <meta charset="UTF-8">
+      <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Population Analysis</title>
+{% endblock head %}
+
+{% block content %}
+<body>
+    {% include 'navbar.html' %}
+    {% include 'contents.html' %}
+</body>
+{% include 'footer.html' %}
+{% endblock content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
