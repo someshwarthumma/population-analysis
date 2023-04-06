@@ -196,7 +196,7 @@ function draw_scatter_plot(selector, config) {
   svg
     .append("text") // text label for the x axis
     .attr("x", 0)
-    .attr("y", height + 85)
+    .attr("y", height + 80)
     .style("text-anchor", "start")
     .style("font-size", "0.75rem")
     .text("Note: Bubble size indicates country's population");
