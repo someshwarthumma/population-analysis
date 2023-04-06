@@ -17,8 +17,7 @@ $sizes: (
   40: 2.5rem,
 );
 
-@each $element,
-$size in $sizes {
+@each $element, $size in $sizes {
   .fs-#{$element} {
     font-size: $size;
   }
@@ -79,12 +78,10 @@ div.tooltip1 {
   color: #fff;
   pointer-events: none;
   font-size: 12px !important;
-  z-index: 500 !important
+  z-index: 500 !important;
 }
 
-
 @media (max-width: 700px) {
-
   #scatter-plot {
     min-height: 400px !important;
   }
