@@ -48,18 +48,26 @@ function render_area_chart(data) {
     draw_area_chart('#trend-line-chart', {'data':data})
     
 }
-function render_scatterplot(data) {
+function render_scatterplot(data,current_year_selected) {
+    let current_population = _.sumBy(data,'population')
+    let avg_density = _.meanBy(data,'population_density')
+    let prev_population = _.sumBy(global_data.yearly_data[parseInt(current_year_selected)-1],'population')
+    let avg_growth = (current_population-prev_population)*100/prev_population
     let scatter_data = []
     _.map(_.filter(data,d=>{return (!isNaN(d['population_growth_rate']))}), (d)=>{
         scatter_data.push({'x':d['population_density'],'y':d['population_growth_rate'] , 'r': d['population'], 'continent': d['continent'],'tooltip':`Country: ${d['country']} </br> Continent: ${d['continent'] == null ? '':d['continent']} </br> Population: ${numeral(d['population']).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn')}`})
     })
-    draw_scatter_plot('#scatter-plot',{'data':scatter_data})
+    let config = {}
+    config['data'] = scatter_data,
+    config['avg_density'] = avg_density,
+    config['avg_growth'] = avg_growth,
+    draw_scatter_plot('#scatter-plot',config)
 }
 
 function render_page() {
     let current_year_data = global_data.yearly_data[global_data.filters.current_year_selected]
     render_total_population_section(current_year_data,global_data.filters.current_year_selected)
-    render_scatterplot(current_year_data)
+    render_scatterplot(current_year_data,global_data.filters.current_year_selected)
 }
 
 $(document).ready(function () {

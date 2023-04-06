@@ -1,7 +1,7 @@
 function draw_scatter_plot(selector, config) {
     var data = config.data
     // set the dimensions and margins of the graph
-    var margin = { top: 30, right: 20, bottom: 70, left: 20 },
+    var margin = { top: 30, right: 20, bottom: 85, left: 50 },
         width = $(selector).width() - margin.left - margin.right,
         height = $(selector).height() - margin.top - margin.bottom;
     // append the svg object to the body of the page
@@ -29,11 +29,13 @@ function draw_scatter_plot(selector, config) {
     // var y = d3.scaleLinear()
     //     .domain([d3.min(data, function (d) { return +d.y; }), d3.max(data, function (d) { return +d.y; })])
     //     .range([height, 0]);
+    var y_max = d3.max(data, function (d) { return +d.y; })
+    y_max = y_max + (y_max / 30)
     var y = d3.scaleLinear()
-        .domain([-1, 4])
+        .domain([-y_max, y_max])
         .range([height, 0]);
     svg.append("g")
-        .call(d3.axisLeft(y).ticks(3).tickValues([-1, 0, 4]));
+        .call(d3.axisLeft(y).ticks(3).tickValues([-y_max, 0, y_max]));
 
     var r = d3.scaleLinear()
         .domain([d3.min(data, function (d) { return +d.r; }), d3.max(data, function (d) { return +d.r; })])
@@ -84,8 +86,34 @@ function draw_scatter_plot(selector, config) {
         .on("mousemove", moveTooltip)
         .on("mouseleave", hideTooltip);
 
+    svg.append('line')
+        .style("stroke", "grey")
+        .style("stroke-width", 2)
+        .style("stroke-dasharray", ("3, 3"))
+        .attr("x1", x(config['avg_density']))
+        .attr("x2", x(config['avg_density']))
+        .attr("y1", 0)
+        .attr("y2", height+5)
+    svg.append('line')
+        .style("stroke", "grey")
+        .style("stroke-width", 2)
+        .style("stroke-dasharray", ("3, 3"))
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", y(0))
+        .attr("y2", y(0))
+
+    svg.append('text')
+        .attr("x", x(config['avg_density']))
+        .attr("y", height+30)
+        .style('font-size','0.7rem')
+        .style("text-anchor", "middle")
+        .text(`World Avg: ${numeral(config['avg_density']).format('0,0')}`)
+        
+
+
     var leg_rect_width = 6;
-    var legendSpacing = width/(continents.length+1);
+    var legendSpacing = width / (2*continents.length);
     var xOffset = 0;
     var yOffset = 260;
     var legend = svg.append('g')
@@ -101,7 +129,7 @@ function draw_scatter_plot(selector, config) {
         .attr('transform',
             (d, i) => {
                 var x = xOffset + (leg_rect_width + legendSpacing) * i;
-                var y = yOffset ;
+                var y = yOffset;
                 return `translate(${x}, ${y})`;
             });
 
@@ -109,14 +137,29 @@ function draw_scatter_plot(selector, config) {
     legend
         .enter()
         .append('text')
-        .attr('x', (d, i) => xOffset + (leg_rect_width + legendSpacing) * i+12  )
+        .style("font-size", "0.75rem")
+        .attr('x', (d, i) => xOffset + (leg_rect_width + legendSpacing) * i + 12)
         .attr('y', yOffset + leg_rect_width)
         .text(d => d);
-    
-        svg
+
+    svg
+        .append("text") // text label for the x axis
+        .attr("x", 0)
+        .attr("y", height + 85)
+        .style("text-anchor", "start")
+        .style("font-size", "0.75rem")
+        .text("Note: Bubble size indicates country's population")
+    svg
         .append("text") // text label for the x axis
         .attr("x", width / 2)
-        .attr("y", height + 70)
+        .attr("y", height + 35)
         .style("text-anchor", "middle")
-        .text("Bubble size indicates country's population");
+        .text("Population Density")
+    svg
+        .append("text") // text label for the x axis
+        .attr("x", -height / 2)
+        .attr("y", -20)
+        .style("text-anchor", "middle")
+        .text("Population Growth (%)")
+        .attr("transform", "rotate(-90)")
 }
