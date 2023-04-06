@@ -5,11 +5,12 @@ function draw_area_chart(selector, config) {
         width = $(selector).width() - margin.left - margin.right,
         height = $(selector).height() - margin.top - margin.bottom;
     // append the svg object to the body of the page
+    d3.select(selector).selectAll("*").remove();
     var svg = d3.select(selector)
         .append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        // .attr("width", width + margin.left + margin.right)
+        // .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -43,6 +44,4 @@ function draw_area_chart(selector, config) {
             .y0(y(0))
             .y1(function (d) { return y(d.value) })
         )
-    
-
 }

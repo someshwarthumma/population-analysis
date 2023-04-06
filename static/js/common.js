@@ -18,7 +18,7 @@ function get_data() {
 function perform_typeCast(data){
     _.map(data, d=>{
         d['year'] = parseInt(d['year'])
-        d['population'] = numeral(d['population']).value() //population_growth_rate
+        d['population'] = numeral(d['population']).value()*k_multiply //population_growth_rate
         d['population_density'] = parseInt(d['population_density']) 
         d['population_growth_rate'] = parseFloat(d['population_growth_rate']) 
     })
@@ -30,7 +30,7 @@ function prepare_data(data) {
     let years =  {'years':Object.keys(_.groupBy(data,'year')).sort().reverse()}
     let trend_data = []
     _.map(_.groupBy(data,'year'), (v,k)=>{
-        trend_data.push({'x':k,'y':_.sumBy(v,'population') * k_multiply, 'tooltip':`Year: ${k} </br> Population: ${numeral(_.sumBy(v,'population') *k_multiply).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn')}`})
+        trend_data.push({'x':k,'y':_.sumBy(v,'population') , 'tooltip':`Year: ${k} </br> Population: ${numeral(_.sumBy(v,'population')).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn')}`})
     })
     _.assign(results, {'filters':years})
     _.assign(results, {'yearly_data':_.groupBy(data,'year')})
@@ -40,7 +40,7 @@ function prepare_data(data) {
 
 function render_total_population_section(data,year_selected) {
     let total_population = _.sumBy(data,'population')
-    $('.total_population').html(numeral(total_population*k_multiply).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn'))
+    $('.total_population').html(numeral(total_population).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn'))
     $('.year_selected').html(`(${year_selected})`)
 }
 
@@ -48,11 +48,18 @@ function render_area_chart(data) {
     draw_area_chart('#trend-line-chart', {'data':data})
     
 }
+function render_scatterplot(data) {
+    let scatter_data = []
+    _.map(_.filter(data,d=>{return (!isNaN(d['population_growth_rate']))}), (d)=>{
+        scatter_data.push({'x':d['population_density'],'y':d['population_growth_rate'] , 'r': d['population'], 'continent': d['continent'],'tooltip':`Country: ${d['country']} </br> Continent: ${d['continent'] == null ? '':d['continent']} </br> Population: ${numeral(d['population']).format('0,0.00 a').toUpperCase().replace('M','Mn').replace('B','Bn')}`})
+    })
+    draw_scatter_plot('#scatter-plot',{'data':scatter_data})
+}
 
 function render_page() {
     let current_year_data = global_data.yearly_data[global_data.filters.current_year_selected]
     render_total_population_section(current_year_data,global_data.filters.current_year_selected)
-    // render_scatterplot(current_year_data)
+    render_scatterplot(current_year_data)
 }
 
 $(document).ready(function () {

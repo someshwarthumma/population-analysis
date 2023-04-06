@@ -11,17 +11,13 @@ def home():
 def data():
    cols = ['country','year','population','population_density','population_growth_rate']
    data = pd.read_csv('./static/data/population.csv',skipinitialspace=True)
+   # mapping = pd.read_csv('./static/data/country-continent-mapping.csv',skipinitialspace=True)
+   mapping = pd.read_csv('./static/data/mapping.csv',skipinitialspace=True)
    data.columns = cols
    data['population'] = data['population'].str.strip()
    data['population_density'] = data['population_density'].str.strip()
    data['population_growth_rate'] = data['population_growth_rate'].str.strip()
-   # data['year'] = data['year'].astype('int')
-   # data['population'] = data['population'].astype('int')
-   # data['population_density'] = data['population_density'].astype('float')
-   # data['population_growth_rate'] = data['population_growth_rate'].astype('float')
-   url_args = MultiDict(request.args)
-   # if(len(url_args.getlist('year')) != 0):
-   #    data = data[data['year'].isin([int(s) for s in url_args.getlist('year')])]
+   data = pd.merge(data, mapping,  how='left', on=['country'])
    return data.to_json(orient="records")
 
 @app.route('/years',methods=['GET'])

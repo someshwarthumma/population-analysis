@@ -17,52 +17,67 @@ $sizes: (
   40: 2.5rem,
 );
 
-@each $element, $size in $sizes {
+@each $element,
+$size in $sizes {
   .fs-#{$element} {
     font-size: $size;
   }
 }
 
 .select-wrapper {
-    height: 20px;
-    overflow-y: visible;
-  }
-  
-  .select {
-    width: 100%;
-    /* make it min-height*/
-    min-height: 50px;
-    border-radius: 25px;
-    border-color: #555;
-    padding: 2px;
-  }
+  height: 20px;
+  overflow-y: visible;
+}
 
-  .bg-yellow{
-    background-color: yellow;
-  }
-  .bg-green{
-    background-color: green;
-  }
-  .bg-blue{
-    background-color: blue;
-  }
+.select {
+  width: 100%;
+  /* make it min-height*/
+  min-height: 50px;
+  border-radius: 25px;
+  border-color: #555;
+  padding: 2px;
+}
 
-.h-200px{
+.bg-yellow {
+  background-color: yellow;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.bg-blue {
+  background-color: blue;
+}
+
+.h-200px {
   height: 200px;
 }
 
-.sp-height{
+.sp-height {
   height: 320px;
 }
 
-svg { border: 1px solid #dedede; }
+svg {
+  border: 1px solid #dedede;
+}
 
-.axis path, .axis line {
+.axis path,
+.axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.area { fill: #4ca3bd; }
-  
-  
+.area {
+  fill: #4ca3bd;
+}
+
+div.tooltip1 {
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  pointer-events: none;
+  font-size: 12px !important;
+  z-index: 500 !important
+}
