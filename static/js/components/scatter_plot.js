@@ -1,10 +1,11 @@
 function draw_scatter_plot(selector, config) {
     var data = config.data
     // set the dimensions and margins of the graph
-    var margin = { top: 30, right: 20, bottom: 50, left: 20 },
+    var margin = { top: 30, right: 20, bottom: 70, left: 20 },
         width = $(selector).width() - margin.left - margin.right,
         height = $(selector).height() - margin.top - margin.bottom;
     // append the svg object to the body of the page
+    var continents = Object.keys(_.groupBy(_.filter(data, d => { return d['continent'] != null }), 'continent'))
     d3.select(selector).selectAll("*").remove();
     var svg = d3.select(selector)
         .append("svg")
@@ -38,8 +39,8 @@ function draw_scatter_plot(selector, config) {
         .domain([d3.min(data, function (d) { return +d.r; }), d3.max(data, function (d) { return +d.r; })])
         .range([2, 20]);
     var color_scale = d3.scaleOrdinal()
-        .domain([...Object.keys(_.groupBy(_.filter(data,d=>{return d['continent'] != null}),'continent'))])
-        .range(["#4e79a7","#f28e2c","#e15759","#76b7b2","#59a14f","#edc949","#af7aa1"])
+        .domain([...continents])
+        .range(["#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1"])
 
     // -1- Create a tooltip div that is hidden by default:
     const tooltip1 = d3
@@ -78,10 +79,44 @@ function draw_scatter_plot(selector, config) {
         .attr("cx", function (d) { return x(d.x); })
         .attr("cy", function (d) { return y(d.y); })
         .attr("r", function (d) { return r(d.r); })
-        .style("fill", function (d) { return d.continent != null ? color_scale(d.continent): "red"})
+        .style("fill", function (d) { return d.continent != null ? color_scale(d.continent) : "red" })
         .on("mouseover", showTooltip)
         .on("mousemove", moveTooltip)
         .on("mouseleave", hideTooltip);
-    
 
+    var leg_rect_width = 6;
+    var legendSpacing = width/(continents.length+1);
+    var xOffset = 0;
+    var yOffset = 260;
+    var legend = svg.append('g')
+        .selectAll('.legendItem')
+        .data([...continents]);
+
+    //Create legend items
+    legend
+        .enter()
+        .append('circle')
+        .attr('r', leg_rect_width)
+        .style('fill', d => color_scale(d))
+        .attr('transform',
+            (d, i) => {
+                var x = xOffset + (leg_rect_width + legendSpacing) * i;
+                var y = yOffset ;
+                return `translate(${x}, ${y})`;
+            });
+
+    //Create legend labels
+    legend
+        .enter()
+        .append('text')
+        .attr('x', (d, i) => xOffset + (leg_rect_width + legendSpacing) * i+12  )
+        .attr('y', yOffset + leg_rect_width)
+        .text(d => d);
+    
+        svg
+        .append("text") // text label for the x axis
+        .attr("x", width / 2)
+        .attr("y", height + 70)
+        .style("text-anchor", "middle")
+        .text("Bubble size indicates country's population");
 }

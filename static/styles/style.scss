@@ -81,3 +81,11 @@ div.tooltip1 {
   font-size: 12px !important;
   z-index: 500 !important
 }
+
+
+@media (max-width: 700px) {
+
+  #scatter-plot {
+    min-height: 400px !important;
+  }
+}
