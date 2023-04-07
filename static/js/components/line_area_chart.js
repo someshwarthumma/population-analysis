@@ -1,7 +1,7 @@
 function draw_area_chart(selector, config) {
   var data = config.data;
   // set the dimensions and margins of the graph
-  var margin = { top: 40, right: 30, bottom: 30, left: 50 },
+  var margin = { top: 40, right: 30, bottom: 30, left: 10 },
     width = $(selector).width() - margin.left - margin.right,
     height = $(selector).height() - margin.top - margin.bottom;
   // append the svg object to the body of the page
@@ -119,4 +119,12 @@ function draw_area_chart(selector, config) {
         .replace("M", "Mn")
         .replace("B", "Bn");
     });
+  
+    svg
+    .append("text") // text label for the x axis
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr('class','font-weight-bold')
+    .style("text-anchor", "start")
+    .text("Population Growth");
 }
