@@ -182,6 +182,13 @@ function draw_scatter_plot(selector, config) {
       var x = xOffset + (leg_rect_width + legendSpacing) * i;
       var y = yOffset;
       return `translate(${x}, ${y})`;
+    })
+    .on("mouseenter", d=>{
+        $('.dots').css("opacity", "0");
+        $('.dots[continent="' + d + '"]').css("opacity", "1");
+    })
+    .on("mouseleave", d=>{
+        $('.dots').css("opacity", "1");
     });
 
   //Create legend labels
