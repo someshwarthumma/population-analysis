@@ -1,7 +1,7 @@
 function draw_scatter_plot(selector, config) {
   var data = config.data;
   // set the dimensions and margins of the graph
-  var margin = { top: 30, right: 20, bottom: 85, left: 50 },
+  var margin = { top: 10, right: 20, bottom: 90, left: 50 },
     width = $(selector).width() - margin.left - margin.right,
     height = $(selector).height() - margin.top - margin.bottom;
   // append the svg object to the body of the page
@@ -103,7 +103,7 @@ function draw_scatter_plot(selector, config) {
   var moveTooltip = function () {
     tooltip1
       .style("left", d3.mouse(this)[0] + 0 + "px")
-      .style("top", d3.mouse(this)[1] + 220 + "px");
+      .style("top", d3.mouse(this)[1] + -40 + "px");
   };
   var hideTooltip = function () {
     tooltip1.style("opacity", 0);
@@ -163,10 +163,10 @@ function draw_scatter_plot(selector, config) {
     .style("text-anchor", "middle")
     .text(`World Avg: ${numeral(config["avg_density"]).format("0,0")}`);
 
-  var leg_rect_width = 6;
+  var leg_rect_width = width*1/100;
   var legendSpacing = width / (2 * continents.length);
   var xOffset = 0;
-  var yOffset = 260;
+  var yOffset = height + height*20/100;
   var legend = svg
     .append("g")
     .selectAll(".legendItem")
@@ -189,17 +189,17 @@ function draw_scatter_plot(selector, config) {
     .enter()
     .append("text")
     .style("font-size", "0.75rem")
-    .attr("x", (d, i) => xOffset + (leg_rect_width + legendSpacing) * i + 12)
+    .attr("x", (d, i) => xOffset + (leg_rect_width + legendSpacing) * i + 1.5*leg_rect_width)
     .attr("y", yOffset + leg_rect_width)
     .text((d) => d);
 
   svg
     .append("text") // text label for the x axis
     .attr("x", 0)
-    .attr("y", height + 80)
+    .attr("y", height + height*30/100)
     .style("text-anchor", "start")
     .style("font-size", "0.75rem")
-    .text("Note: Bubble size indicates country's population");
+    .text("Bubble size indicates country's population");
   svg
     .append("text") // text label for the x axis
     .attr("x", width / 2)
