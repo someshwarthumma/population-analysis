@@ -163,10 +163,10 @@ function draw_scatter_plot(selector, config) {
     .style("text-anchor", "middle")
     .text(`World Avg: ${numeral(config["avg_density"]).format("0,0")}`);
 
-  var leg_rect_width = width*1/100;
+  var leg_rect_width = (width * 1) / 100;
   var legendSpacing = width / (2 * continents.length);
   var xOffset = 0;
-  var yOffset = height + height*20/100;
+  var yOffset = height + (height * 20) / 100;
   var legend = svg
     .append("g")
     .selectAll(".legendItem")
@@ -183,12 +183,12 @@ function draw_scatter_plot(selector, config) {
       var y = yOffset;
       return `translate(${x}, ${y})`;
     })
-    .on("mouseenter", d=>{
-        $('.dots').css("opacity", "0");
-        $('.dots[continent="' + d + '"]').css("opacity", "1");
+    .on("mouseenter", (d) => {
+      $(".dots").css("opacity", "0");
+      $('.dots[continent="' + d + '"]').css("opacity", "1");
     })
-    .on("mouseleave", d=>{
-        $('.dots').css("opacity", "1");
+    .on("mouseleave", (d) => {
+      $(".dots").css("opacity", "1");
     });
 
   //Create legend labels
@@ -196,14 +196,18 @@ function draw_scatter_plot(selector, config) {
     .enter()
     .append("text")
     .style("font-size", "0.75rem")
-    .attr("x", (d, i) => xOffset + (leg_rect_width + legendSpacing) * i + 1.5*leg_rect_width)
+    .attr(
+      "x",
+      (d, i) =>
+        xOffset + (leg_rect_width + legendSpacing) * i + 1.5 * leg_rect_width
+    )
     .attr("y", yOffset + leg_rect_width)
     .text((d) => d);
 
   svg
     .append("text") // text label for the x axis
     .attr("x", 0)
-    .attr("y", height + height*30/100)
+    .attr("y", height + (height * 30) / 100)
     .style("text-anchor", "start")
     .style("font-size", "0.75rem")
     .text("Bubble size indicates country's population");

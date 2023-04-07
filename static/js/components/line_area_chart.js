@@ -9,10 +9,11 @@ function draw_area_chart(selector, config) {
   var svg = d3
     .select(selector)
     .append("svg")
-    .attr('class','border-0')
+    .attr("class", "border-0")
     .attr(
       "viewBox",
-      `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom
+      `0 0 ${width + margin.left + margin.right} ${
+        height + margin.top + margin.bottom
       }`
     )
     // .attr("width", width + margin.left + margin.right)
@@ -33,11 +34,17 @@ function draw_area_chart(selector, config) {
     )
     .range([0, width]);
 
-  svg.append("g")
+  svg
+    .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .attr('class', 'bottom-axis')
-    .call(d3.axisBottom(x).tickSizeOuter(0)
-      .tickFormat(d3.timeFormat("%Y")).tickValues([data[0].date, data[data.length - 1].date]))
+    .attr("class", "bottom-axis")
+    .call(
+      d3
+        .axisBottom(x)
+        .tickSizeOuter(0)
+        .tickFormat(d3.timeFormat("%Y"))
+        .tickValues([data[0].date, data[data.length - 1].date])
+    );
 
   // Add Y axis
   var y = d3
@@ -87,22 +94,29 @@ function draw_area_chart(selector, config) {
           return y(d.value);
         })
     );
-  svg.selectAll('text').append('text')
+  svg
+    .selectAll("text")
+    .append("text")
     .data(data)
     .enter()
-    .append('text')
-    .attr('x', d => { return x(d.date) })
-    .attr('y', d => { return y(d.value) - 12 })
-    .attr('fill', 'grey')
+    .append("text")
+    .attr("x", (d) => {
+      return x(d.date);
+    })
+    .attr("y", (d) => {
+      return y(d.value) - 12;
+    })
+    .attr("fill", "grey")
     .style("font-size", "0.7rem")
     .style("text-anchor", "middle")
-    .attr('opacity', (_d, i) => { return (i == 2 || i == (data.length - 1)) ? '1' : '0' })
-    .text(d => {
-      return numeral(d.value
-      )
+    .attr("opacity", (_d, i) => {
+      return i == 2 || i == data.length - 1 ? "1" : "0";
+    })
+    .text((d) => {
+      return numeral(d.value)
         .format("0,0.00 a")
         .toUpperCase()
         .replace("M", "Mn")
-        .replace("B", "Bn")
-    })
+        .replace("B", "Bn");
+    });
 }
